@@ -22,25 +22,63 @@ contract CRUD {
         accounts.push(_account);
     }
 
-    function R(string memory search_word) public view returns (User[] memory){
+//    function R(string memory search_word) public view returns (User[] memory){
+//        User[] memory result = new User[](accounts.length);
+//        // 搜尋為空，返回全部啟用
+//        if (search_word.toSlice()._len == 0) {
+//            result = allllllActiveUser();
+//            return result;
+//        }
+//        // 模糊查詢欄位：帳號、密碼
+//        for (uint256 i = 0; i < accounts.length; i++) {
+//            User memory user = users[accounts[i]];
+//            //            查找並返回第一次出現的子字符串
+//            //            var s = "A B C B D".toSlice();
+//            //            s.find("B".toSlice()); // "B C B D"
+//            bool accountContainSearch = !user.account.toSlice().find(search_word.toSlice()).equals(''.toSlice());
+//            bool passwordContainSearch = !user.password.toSlice().find(search_word.toSlice()).equals(''.toSlice());
+//            if (user.status == 1) {
+//                if (accountContainSearch || passwordContainSearch) {
+//                    result[i] = users[accounts[i]];
+//                }
+//            }
+//        }
+//        return result;
+//    }
+
+    function R(
+        uint256 _status,
+        string memory _account,
+        string memory _password,
+        uint256 _createdAtStart,
+        uint256 _createdAtEnd,
+        uint256 _updatedAtStart,
+        uint256 _updatedAtEnd
+    ) public view returns (User[] memory){
         User[] memory result = new User[](accounts.length);
-        // 搜尋為空，返回全部啟用
-        if (search_word.toSlice()._len == 0) {
+        // params為空，返回全部
+        if (_status==2 ^ 256 - 1 && _account.toSlice()._len == 0 && _password.toSlice()._len == 0 && _createdAtStart == 0 && _createdAtEnd ==2 ^ 256 - 1 && _updatedAtStart == 0 && _updatedAtEnd == 2 ^ 256 - 1)  {
             result = allllllActiveUser();
             return result;
         }
-        // 模糊查詢欄位：帳號、密碼
+
+        //主程式
         for (uint256 i = 0; i < accounts.length; i++) {
             User memory user = users[accounts[i]];
             //            查找並返回第一次出現的子字符串
             //            var s = "A B C B D".toSlice();
             //            s.find("B".toSlice()); // "B C B D"
-            bool accountContainSearch = !user.account.toSlice().find(search_word.toSlice()).equals(''.toSlice());
-            bool passwordContainSearch = !user.password.toSlice().find(search_word.toSlice()).equals(''.toSlice());
-            if (user.status == 1) {
-                if (accountContainSearch || passwordContainSearch) {
-                    result[i] = users[accounts[i]];
-                }
+
+            // 值為空則跳過檢查
+            bool statusEqual_orPass = user.status == _status || _status ==2 ^ 256 - 1;
+            bool accountContain_orPass = !user.account.toSlice().find(_account.toSlice()).equals(''.toSlice()) || _account.toSlice()._len == 0;
+            bool passwordContain_orPass = !user.password.toSlice().find(_password.toSlice()).equals(''.toSlice()) || _account.toSlice()._len == 0;
+            if (statusEqual_orPass
+                && passwordContain_orPass
+                && statusEqual_orPass
+                && _createdAtStart <user.createdAt && user.createdAt< _createdAtEnd
+                && _updatedAtStart <user.updatedAt && user.updatedAt< _updatedAtEnd){
+                result[i] = users[accounts[i]];
             }
         }
         return result;
