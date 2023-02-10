@@ -17,34 +17,11 @@ contract CRUD {
 
     function C(string memory _account, string memory _password) public {
         //        確認還沒創造過
-        require(indexOf(accounts, _account) == 2 ^ 256 - 1, "already exist");
+        require(indexOf(accounts, _account) == 2 ** 32 - 1, "already exist");
         users[_account] = User(_account, _password, 1, block.timestamp, block.timestamp);
         accounts.push(_account);
     }
 
-//    function R(string memory search_word) public view returns (User[] memory){
-//        User[] memory result = new User[](accounts.length);
-//        // 搜尋為空，返回全部啟用
-//        if (search_word.toSlice()._len == 0) {
-//            result = allllllActiveUser();
-//            return result;
-//        }
-//        // 模糊查詢欄位：帳號、密碼
-//        for (uint256 i = 0; i < accounts.length; i++) {
-//            User memory user = users[accounts[i]];
-//            //            查找並返回第一次出現的子字符串
-//            //            var s = "A B C B D".toSlice();
-//            //            s.find("B".toSlice()); // "B C B D"
-//            bool accountContainSearch = !user.account.toSlice().find(search_word.toSlice()).equals(''.toSlice());
-//            bool passwordContainSearch = !user.password.toSlice().find(search_word.toSlice()).equals(''.toSlice());
-//            if (user.status == 1) {
-//                if (accountContainSearch || passwordContainSearch) {
-//                    result[i] = users[accounts[i]];
-//                }
-//            }
-//        }
-//        return result;
-//    }
 
     function R(
         uint256 _status,
@@ -57,25 +34,25 @@ contract CRUD {
     ) public view returns (User[] memory){
         User[] memory result = new User[](accounts.length);
         // params為空，返回全部
-        if (_status==2 ^ 256 - 1 && _account.toSlice()._len == 0 && _password.toSlice()._len == 0 && _createdAtStart == 0 && _createdAtEnd ==2 ^ 256 - 1 && _updatedAtStart == 0 && _updatedAtEnd == 2 ^ 256 - 1)  {
+        if (_status==2 ** 32 - 1 && _account.toSlice()._len == 0 && _password.toSlice()._len == 0 && _createdAtStart == 0 && _createdAtEnd ==2 ** 32 - 1 && _updatedAtStart == 0 && _updatedAtEnd == 2 ** 32 - 1)  {
             result = allllllActiveUser();
             return result;
         }
 
         //主程式
-        for (uint256 i = 0; i < accounts.length; i++) {
+        for (uint i = 0; i < accounts.length; i++) {
             User memory user = users[accounts[i]];
             //            查找並返回第一次出現的子字符串
             //            var s = "A B C B D".toSlice();
             //            s.find("B".toSlice()); // "B C B D"
 
             // 值為空則跳過檢查
-            bool statusEqual_orPass = user.status == _status || _status ==2 ^ 256 - 1;
+            bool statusEqual_orPass = user.status == _status || _status ==2 ** 32 - 1;
             bool accountContain_orPass = !user.account.toSlice().find(_account.toSlice()).equals(''.toSlice()) || _account.toSlice()._len == 0;
-            bool passwordContain_orPass = !user.password.toSlice().find(_password.toSlice()).equals(''.toSlice()) || _account.toSlice()._len == 0;
+            bool passwordContain_orPass = !user.password.toSlice().find(_password.toSlice()).equals(''.toSlice()) || _password.toSlice()._len == 0;
             if (statusEqual_orPass
+                && accountContain_orPass
                 && passwordContain_orPass
-                && statusEqual_orPass
                 && _createdAtStart <user.createdAt && user.createdAt< _createdAtEnd
                 && _updatedAtStart <user.updatedAt && user.updatedAt< _updatedAtEnd){
                 result[i] = users[accounts[i]];
@@ -86,29 +63,29 @@ contract CRUD {
 
     function U(string memory _account, string memory _password) public {
         //        確認存在
-        require(indexOf(accounts, _account) != 2 ^ 256 - 1, "not exit");
+        require(indexOf(accounts, _account) != 2 ** 32 - 1, "not exit");
         users[_account].password = _password;
         users[_account].updatedAt = block.timestamp;
     }
 
     function D(string memory _account) public {
         //        確認存在
-        require(indexOf(accounts, _account) != 2 ^ 256 - 1, "not exit");
+        require(indexOf(accounts, _account) != 2 ** 32 - 1, "not exit");
 
         users[_account].status = 0;
     }
-    function indexOf(string[] memory arr, string memory searchFor) private pure returns (uint256) {
-        for (uint256 i = 0; i < arr.length; i++) {
+    function indexOf(string[] memory arr, string memory searchFor) private pure returns (uint) {
+        for (uint i = 0; i < arr.length; i++) {
             if (arr[i].toSlice().equals(searchFor.toSlice())) {
                 return i;
             }
         }
-        return 2 ^ 256 - 1;
+        return 2 ** 32 - 1;
     }
 
     function allllllActiveUser() private view returns (User[] memory){
         User[] memory result = new User[](accounts.length);
-        for (uint256 i = 0; i < accounts.length; i++) {
+        for (uint i = 0; i < accounts.length; i++) {
             if (users[accounts[i]].status == 1) {
                 result[i] = users[accounts[i]];
             }
