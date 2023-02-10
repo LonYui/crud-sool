@@ -24,9 +24,21 @@ contract CRUD {
 
     function R(string memory search_word) public view returns (User[] memory){
         User[] memory result = new User[](accounts.length);
+        // 搜尋為空，返回全部啟用
         if (search_word.toSlice()._len == 0) {
-            for (uint256 i = 0; i < accounts.length; i++) {
-                if (users[accounts[i]].status == 1) {
+            result = allllllActiveUser();
+            return result;
+        }
+        // 模糊查詢欄位：帳號、密碼
+        for (uint256 i = 0; i < accounts.length; i++) {
+            User memory user = users[accounts[i]];
+            //            查找並返回第一次出現的子字符串
+            //            var s = "A B C B D".toSlice();
+            //            s.find("B".toSlice()); // "B C B D"
+            bool accountContainSearch = !user.account.toSlice().find(search_word.toSlice()).equals(''.toSlice());
+            bool passwordContainSearch = !user.password.toSlice().find(search_word.toSlice()).equals(''.toSlice());
+            if (user.status == 1) {
+                if (accountContainSearch || passwordContainSearch) {
                     result[i] = users[accounts[i]];
                 }
             }
@@ -47,9 +59,6 @@ contract CRUD {
 
         users[_account].status = 0;
     }
-
-
-
     function indexOf(string[] memory arr, string memory searchFor) private pure returns (uint256) {
         for (uint256 i = 0; i < arr.length; i++) {
             if (arr[i].toSlice().equals(searchFor.toSlice())) {
@@ -57,6 +66,16 @@ contract CRUD {
             }
         }
         return 2 ^ 256 - 1;
+    }
+
+    function allllllActiveUser() private view returns (User[] memory){
+        User[] memory result = new User[](accounts.length);
+        for (uint256 i = 0; i < accounts.length; i++) {
+            if (users[accounts[i]].status == 1) {
+                result[i] = users[accounts[i]];
+            }
+        }
+        return result;
     }
 }
 
