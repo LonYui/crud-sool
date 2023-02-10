@@ -12,8 +12,8 @@ contract CRUD {
     mapping (string => User) public users;
     string[] public accounts;
 
-    function initialize() external {
-    }
+//    function initialize() external {
+//    }
 
     function createUser(string memory _account, string memory _password) public {
         //        確認還沒創造
