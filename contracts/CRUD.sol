@@ -32,31 +32,37 @@ contract CRUD {
         uint256 _createdAtStart,
         uint256 _createdAtEnd,
         uint256 _updatedAtStart,
-        uint256 _updatedAtEnd
+        uint256 _updatedAtEnd,
+        uint256 _bank,
+        uint256 _location,
+        string memory _remark
     ) public view returns (User[] memory){
         User[] memory result = new User[](accounts.length);
         // params為空，返回全部
-        if (_status==2 ** 32 - 2 && _account.toSlice()._len == 0 && _password.toSlice()._len == 0 && _createdAtStart == 0 && _createdAtEnd ==2 ** 32 - 1 && _updatedAtStart == 0 && _updatedAtEnd == 2 ** 32 - 1)  {
+        if (_status==2 ** 32 - 2 && _account.toSlice()._len == 0 && _password.toSlice()._len == 0 && _createdAtStart == 0 && _createdAtEnd ==2 ** 32 - 1 && _updatedAtStart == 0 && _updatedAtEnd == 2 ** 32 - 1 && _bank == 0 && _location==0 && _remark.toSlice()._len == 0)  {
             result = allllllUser();
             return result;
         }
 
         //主程式
         for (uint i = 0; i < accounts.length; i++) {
-            User memory user = users[accounts[i]];
-            //            查找並返回第一次出現的子字符串
-            //            var s = "A B C B D".toSlice();
-            //            s.find("B".toSlice()); // "B C B D"
+//            User memory user = users[accounts[i]];
 
             // 值為空則跳過檢查
-            bool statusEqual_orPass = user.status == _status || _status ==2 ** 32 - 2;
-            bool accountContain_orPass = !user.account.toSlice().find(_account.toSlice()).equals(''.toSlice()) || _account.toSlice()._len == 0;
-            bool passwordContain_orPass = !user.password.toSlice().find(_password.toSlice()).equals(''.toSlice()) || _password.toSlice()._len == 0;
-            if (statusEqual_orPass
-                && accountContain_orPass
-                && passwordContain_orPass
-                && _createdAtStart <user.createdAt && user.createdAt< _createdAtEnd
-                && _updatedAtStart <user.updatedAt && user.updatedAt< _updatedAtEnd){
+//            bool statusEqual_orPass = user.status == _status || _status ==2 ** 32 - 2;
+//            bool bankEqual_orPass = user.bank == _bank || _bank == 0;
+//            bool locationEqual_orPass = user.location == _location || _location == 0;
+//            bool accountContain_orPass = !user.account.toSlice().find(_account.toSlice()).equals(''.toSlice()) || _account.toSlice()._len == 0;
+//            bool passwordContain_orPass = !user.password.toSlice().find(_password.toSlice()).equals(''.toSlice()) || _password.toSlice()._len == 0;
+//            bool remarkContain_orPass = !user.remark.toSlice().find(_remark.toSlice()).equals(''.toSlice()) || _remark.toSlice()._len == 0;
+            if ((users[accounts[i]].status == _status || _status ==2 ** 32 - 2)
+            && (users[accounts[i]].bank == _bank || _bank == 0)
+            && (users[accounts[i]].location == _location || _location == 0)
+            && (!users[accounts[i]].account.toSlice().find(_account.toSlice()).equals(''.toSlice()) || _account.toSlice()._len == 0)
+            && (!users[accounts[i]].password.toSlice().find(_password.toSlice()).equals(''.toSlice()) || _password.toSlice()._len == 0)
+            && (!users[accounts[i]].remark.toSlice().find(_remark.toSlice()).equals(''.toSlice()) || _remark.toSlice()._len == 0)
+            && _createdAtStart <users[accounts[i]].createdAt && users[accounts[i]].createdAt< _createdAtEnd
+            && _updatedAtStart <users[accounts[i]].updatedAt && users[accounts[i]].updatedAt< _updatedAtEnd){
                 result[i] = users[accounts[i]];
             }
         }
