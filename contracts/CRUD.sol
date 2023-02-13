@@ -35,7 +35,7 @@ contract CRUD {
         User[] memory result = new User[](accounts.length);
         // params為空，返回全部
         if (_status==2 ** 32 - 1 && _account.toSlice()._len == 0 && _password.toSlice()._len == 0 && _createdAtStart == 0 && _createdAtEnd ==2 ** 32 - 1 && _updatedAtStart == 0 && _updatedAtEnd == 2 ** 32 - 1)  {
-            result = allllllActiveUser();
+            result = allllllUser();
             return result;
         }
 
@@ -83,12 +83,11 @@ contract CRUD {
         return 2 ** 32 - 1;
     }
 
-    function allllllActiveUser() private view returns (User[] memory){
+
+    function allllllUser() private view returns (User[] memory){
         User[] memory result = new User[](accounts.length);
         for (uint i = 0; i < accounts.length; i++) {
-            if (users[accounts[i]].status == 1) {
-                result[i] = users[accounts[i]];
-            }
+            result[i] = users[accounts[i]];
         }
         return result;
     }
