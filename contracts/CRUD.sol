@@ -61,18 +61,20 @@ contract CRUD {
         return result;
     }
 
-    function U(string memory _account, string memory _password) public {
+    function U(string memory _account, string memory _password, string memory _status) public {
         //        確認存在
         require(indexOf(accounts, _account) != 2 ** 32 - 1, "not exit");
+        require(_status != 2 ** 32 - 1, "deltet user can't not edit");
         users[_account].password = _password;
         users[_account].updatedAt = block.timestamp;
+        users[_account]._status = block._status;
     }
 
     function D(string memory _account) public {
         //        確認存在
         require(indexOf(accounts, _account) != 2 ** 32 - 1, "not exit");
 
-        users[_account].status = 0;
+        users[_account].status = 2 ** 32 - 1;
     }
     function indexOf(string[] memory arr, string memory searchFor) private pure returns (uint) {
         for (uint i = 0; i < arr.length; i++) {
