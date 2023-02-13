@@ -6,7 +6,7 @@ contract CRUD {
     struct User {
         string account;
         string password;
-        uint status;
+        uint status;//Math.pow(2, 32) - 2 -> 代表null
         uint createdAt;
         uint updatedAt;
     }
@@ -47,7 +47,7 @@ contract CRUD {
             //            s.find("B".toSlice()); // "B C B D"
 
             // 值為空則跳過檢查
-            bool statusEqual_orPass = user.status == _status || _status ==2 ** 32 - 1;
+            bool statusEqual_orPass = user.status == _status || _status ==2 ** 32 - 2;
             bool accountContain_orPass = !user.account.toSlice().find(_account.toSlice()).equals(''.toSlice()) || _account.toSlice()._len == 0;
             bool passwordContain_orPass = !user.password.toSlice().find(_password.toSlice()).equals(''.toSlice()) || _password.toSlice()._len == 0;
             if (statusEqual_orPass
