@@ -9,16 +9,18 @@ contract CRUD {
         uint status;//Math.pow(2, 32) - 2 -> 代表null
         uint createdAt;
         uint updatedAt;
+        uint bank;
+        uint location;
+        string remark;
     }
 
     mapping(string => User) users;
     //用來做 iterate
     string[] accounts;
 
-    function C(string memory _account, string memory _password) public {
-        //        確認還沒創造過
+    function C(string memory _account, string memory _password, uint _bank, uint _location, string memory _remark) public {
         require(indexOf(accounts, _account) == 2 ** 32 - 1, "already exist");
-        users[_account] = User(_account, _password, 1, block.timestamp, block.timestamp);
+        users[_account] = User(_account, _password, 1, block.timestamp, block.timestamp, _bank, _location, _remark);
         accounts.push(_account);
     }
 
@@ -61,13 +63,15 @@ contract CRUD {
         return result;
     }
 
-    function U(string memory _account, string memory _password, uint256 _status) public {
-        //        確認存在
+    function U(string memory _account, string memory _password, uint256 _status, uint _bank, uint _location, string memory _remark) public {
         require(indexOf(accounts, _account) != 2 ** 32 - 1, "not exit");
         require(_status != 2 ** 32 - 1, "deltet user can't not edit");
         users[_account].password = _password;
         users[_account].updatedAt = block.timestamp;
         users[_account].status = _status;
+        users[_account].bank = _bank;
+        users[_account].location = _location;
+        users[_account].remark = _remark;
     }
 
     function D(string memory _account) public {
