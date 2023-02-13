@@ -67,7 +67,7 @@ contract CRUD {
         require(_status != 2 ** 32 - 1, "deltet user can't not edit");
         users[_account].password = _password;
         users[_account].updatedAt = block.timestamp;
-        users[_account]._status = block._status;
+        users[_account].status = _status;
     }
 
     function D(string memory _account) public {
