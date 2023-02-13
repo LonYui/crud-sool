@@ -36,7 +36,7 @@ contract CRUD {
     ) public view returns (User[] memory){
         User[] memory result = new User[](accounts.length);
         // params為空，返回全部
-        if (_status==2 ** 32 - 1 && _account.toSlice()._len == 0 && _password.toSlice()._len == 0 && _createdAtStart == 0 && _createdAtEnd ==2 ** 32 - 1 && _updatedAtStart == 0 && _updatedAtEnd == 2 ** 32 - 1)  {
+        if (_status==2 ** 32 - 2 && _account.toSlice()._len == 0 && _password.toSlice()._len == 0 && _createdAtStart == 0 && _createdAtEnd ==2 ** 32 - 1 && _updatedAtStart == 0 && _updatedAtEnd == 2 ** 32 - 1)  {
             result = allllllUser();
             return result;
         }
