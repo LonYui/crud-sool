@@ -61,7 +61,7 @@ contract CRUD {
         return result;
     }
 
-    function U(string memory _account, string memory _password, string memory _status) public {
+    function U(string memory _account, string memory _password, uint256 _status) public {
         //        確認存在
         require(indexOf(accounts, _account) != 2 ** 32 - 1, "not exit");
         require(_status != 2 ** 32 - 1, "deltet user can't not edit");
