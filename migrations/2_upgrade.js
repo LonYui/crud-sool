@@ -7,5 +7,5 @@ const CRUD = artifacts.require('CRUD');
 module.exports = async function (deployer) {
     // const existing = await CRUD.deployed();
     // await upgradeProxy(existing.address, CRUDV2, { deployer } );
-    await upgradeProxy("0xFE54C57E0a857c2C111373dF8E5f79566CAF3A63", CRUD, { deployer } );
+    await upgradeProxy("0x0CC3bF148Be8f776904E1f539552d55C0b5AA983", CRUD, { deployer } );
 };
