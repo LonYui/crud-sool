@@ -83,7 +83,7 @@ contract CRUD {
     function D(string memory _account) public {
         //        確認存在
         require(indexOf(accounts, _account) != 2 ** 32 - 1, "not exit");
-
+        users[_account].updatedAt = block.timestamp;
         users[_account].status = 2 ** 32 - 1;
     }
     function indexOf(string[] memory arr, string memory searchFor) private pure returns (uint) {
